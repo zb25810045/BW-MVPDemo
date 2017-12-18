@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.bloodcrown.step2_2.R;
@@ -18,9 +19,16 @@ import com.bloodcrown.step2_2.persenter.NewsFragmentPersenter;
 
 public class NewsFragment extends BaseFragment<NewsFragment, NewsFragmentPersenter> implements INewsView {
 
-    private View rootView;
     private TextView tx_content;
     private Button btn_getNews;
+
+    private Button btn_content;
+    private Button btn_loading;
+    private Button btn_dataError;
+    private Button btn_dataEmpty;
+    private Button btn_netError;
+
+    private FrameLayout layout_content;
 
     @Override
     public void update(String data) {
@@ -47,10 +55,27 @@ public class NewsFragment extends BaseFragment<NewsFragment, NewsFragmentPersent
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        layout_content = (FrameLayout) rootView.findViewById(R.id.layout_content);
+
+        tx_content = (TextView) rootView.findViewById(R.id.content);
+        btn_getNews = (Button) rootView.findViewById(R.id.title11);
+
+        btn_content = (Button) rootView.findViewById(R.id.title31);
+        btn_loading = (Button) rootView.findViewById(R.id.title24);
+        btn_dataError = (Button) rootView.findViewById(R.id.title22);
+        btn_dataEmpty = (Button) rootView.findViewById(R.id.title23);
+        btn_netError = (Button) rootView.findViewById(R.id.title21);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        tx_content = (TextView) rootView.findViewById(R.id.content22);
-        btn_getNews = (Button) rootView.findViewById(R.id.title11);
+
+        // 自由设定状态页面加载的父布局
+        getStateView().setRootView(layout_content);
 
         btn_getNews.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +84,40 @@ public class NewsFragment extends BaseFragment<NewsFragment, NewsFragmentPersent
                 getPersenter().getView().showNewsList();
             }
         });
-    }
 
+        btn_loading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewsFragment.this.showLoading();
+            }
+        });
+
+        btn_dataError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewsFragment.this.showDataError();
+            }
+        });
+
+        btn_dataEmpty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewsFragment.this.showDataEmpty();
+            }
+        });
+
+        btn_netError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewsFragment.this.shownNetError();
+            }
+        });
+
+        btn_content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewsFragment.this.showContent();
+            }
+        });
+    }
 }

@@ -14,16 +14,74 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <TextView
-        android:id="@+id/content22"
+    <Button
+        android:id="@+id/title21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="网络错误"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/title22"
+        app:layout_constraintTop_toBottomOf="@+id/title11"
+    />
+
+    <Button
+        android:id="@+id/title22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="数据异常"
+        app:layout_constraintBaseline_toBaselineOf="@+id/title21"
+        app:layout_constraintLeft_toRightOf="@+id/title21"
+        app:layout_constraintRight_toLeftOf="@+id/title23"
+    />
+
+    <Button
+        android:id="@+id/title23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="没有数据"
+        app:layout_constraintBaseline_toBaselineOf="@+id/title21"
+        app:layout_constraintLeft_toRightOf="@+id/title22"
+        app:layout_constraintRight_toLeftOf="@+id/title24"
+    />
+
+    <Button
+        android:id="@+id/title24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="加载中......"
+        app:layout_constraintBaseline_toBaselineOf="@+id/title21"
+        app:layout_constraintLeft_toRightOf="@+id/title23"
+        app:layout_constraintRight_toRightOf="parent"
+    />
+
+    <Button
+        android:id="@+id/title31"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="显示内容"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title21"
+    />
+
+    <FrameLayout
+        android:id="@+id/layout_content"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
-        android:text="Fragment"
-        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title11"/>
+        app:layout_constraintTop_toBottomOf="@+id/title31">
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Hello World!"
+        />
+
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -4,9 +4,11 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.bloodcrown.step2_2.base.customeView.BaseCustomeView;
 import com.bloodcrown.step2_2.persenter.NewsCustomeViewPersenter;
+import com.bloodcrown.step2_2.stateview.DefaultStateView;
 
 /**
  * Created by zbzbgo on 2017/12/3.
@@ -50,5 +52,35 @@ public class NewsButton extends BaseCustomeView<NewsButton, NewsCustomeViewPerse
 //                Toast.makeText(NewsButton.this.getContext(), "自定义 view 激活", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void showContent() {
+
+    }
+
+    @Override
+    public void showDataError() {
+
+    }
+
+    @Override
+    public void showDataEmpty() {
+
+    }
+
+    @Override
+    public void shownNetError() {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public DefaultStateView getStateView() {
+        return null;
     }
 }

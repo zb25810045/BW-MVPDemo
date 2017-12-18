@@ -8,8 +8,6 @@ public abstract class BasePersenter<V extends IBaseView, L extends ILifecyclePro
 
     protected V mIBaseView;
 
-    protected abstract L createlLifecycleProxy();
-
     public void attachView(V baseViewa) {
         this.mIBaseView = baseViewa;
     }
@@ -21,5 +19,7 @@ public abstract class BasePersenter<V extends IBaseView, L extends ILifecyclePro
     public void detachView() {
         this.mIBaseView = null;
     }
+
+    protected abstract L createlLifecycleProxy();
 
 }

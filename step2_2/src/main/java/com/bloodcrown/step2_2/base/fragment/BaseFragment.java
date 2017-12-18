@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bloodcrown.step2_2.base.base.IBaseView;
+import com.bloodcrown.step2_2.stateview.DefaultStateView;
 
 /**
  * Created by zbzbgo on 2017/12/3.
@@ -18,19 +19,25 @@ import com.bloodcrown.step2_2.base.base.IBaseView;
 
 public abstract class BaseFragment<V extends BaseFragment, P extends BaseFragmentPersenter<V>> extends Fragment implements IBaseView {
 
+    public View rootView;
     private P mBasePersenter;
 
     protected abstract P createPersenter();
 
     private IFragmentLifecycleProxy lifecycleProxy;
+    private DefaultStateView mStateView;
 
     public P getPersenter() {
         return mBasePersenter;
     }
 
     @Override
+    public DefaultStateView getStateView() {
+        return mStateView;
+    }
+
+    @Override
     public void onAttach(Context context) {
-//        lifecycleProxy.onAttach(context);
         super.onAttach(context);
     }
 
@@ -38,13 +45,31 @@ public abstract class BaseFragment<V extends BaseFragment, P extends BaseFragmen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        init();
+        lifecycleProxy.onCreate(savedInstanceState);
+    }
+
+    private void init() {
+        initPersenter();
+        initlifecycleProxy();
+        initStateView();
+    }
+
+    private void initPersenter() {
         mBasePersenter = createPersenter();
         mBasePersenter.attachView((V) this);
+    }
 
+    private void initlifecycleProxy() {
         lifecycleProxy = getPersenter().createlLifecycleProxy();
-//        lifecycleProxy = (IFragmentLifecycleProxy) Proxy.newProxyInstance(lifecycleProxy.getClass().getClassLoader(), lifecycleProxy.getClass().getInterfaces(), new NotNullnvocationHandler(lifecycleProxy));
+    }
 
-        lifecycleProxy.onCreate(savedInstanceState);
+    private void initStateView() {
+        mStateView = createStateView();
+    }
+
+    public DefaultStateView createStateView() {
+        return new DefaultStateView(getContext());
     }
 
     @Override
@@ -62,53 +87,56 @@ public abstract class BaseFragment<V extends BaseFragment, P extends BaseFragmen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = lifecycleProxy.onCreateView(inflater, container, savedInstanceState);
-        if (view != null) {
-            return view;
+        rootView = lifecycleProxy.onCreateView(inflater, container, savedInstanceState);
+        if (rootView != null) {
+            return rootView;
         }
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        lifecycleProxy.onViewCreated(view, savedInstanceState);
         super.onViewCreated(view, savedInstanceState);
+        lifecycleProxy.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        lifecycleProxy.onActivityCreated(savedInstanceState);
         super.onActivityCreated(savedInstanceState);
+
+        //注意 rootview 的父控件才是我们的目标
+        getStateView().setRootView((ViewGroup) rootView.getParent());
+        lifecycleProxy.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public void onPause() {
-        lifecycleProxy.onPause();
         super.onPause();
+        lifecycleProxy.onPause();
     }
 
     @Override
     public void onStop() {
-        lifecycleProxy.onStop();
         super.onStop();
+        lifecycleProxy.onStop();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        lifecycleProxy.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+        lifecycleProxy.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        lifecycleProxy.onRequestPermissionsResult(requestCode, permissions, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        lifecycleProxy.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        lifecycleProxy.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
+        lifecycleProxy.onSaveInstanceState(outState);
     }
 
     @Override
@@ -124,6 +152,31 @@ public abstract class BaseFragment<V extends BaseFragment, P extends BaseFragmen
             mBasePersenter.detachView();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void showContent() {
+        mStateView.showContent();
+    }
+
+    @Override
+    public void showDataError() {
+        mStateView.showDataError();
+    }
+
+    @Override
+    public void showDataEmpty() {
+        mStateView.showDataEmpty();
+    }
+
+    @Override
+    public void shownNetError() {
+        mStateView.shownNetError();
+    }
+
+    @Override
+    public void showLoading() {
+        mStateView.showLoading();
     }
 
 }
