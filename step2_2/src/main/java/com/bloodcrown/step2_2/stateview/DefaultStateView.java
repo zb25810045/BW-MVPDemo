@@ -3,7 +3,6 @@ package com.bloodcrown.step2_2.stateview;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 /**
  * Created by zbzbgo on 2017/12/16.
@@ -26,13 +25,6 @@ public class DefaultStateView implements IStateView {
     }
 
     private void initStateViewProvide(Context context) {
-        mStateViewProvide = new DefaultStateViewProvide(context);
-    }
-
-    private void invalidata(Context context) {
-        if (context == null) {
-            return;
-        }
         mStateViewProvide = new DefaultStateViewProvide(context);
     }
 
@@ -136,6 +128,13 @@ public class DefaultStateView implements IStateView {
         }
         rootView.addView(view);
         mStateViewProvide.setCurrentStateViewCode(stateViewCode);
+    }
+
+    private void invalidata(Context context) {
+        if (context == null) {
+            return;
+        }
+        mStateViewProvide = new DefaultStateViewProvide(context);
     }
 
 }

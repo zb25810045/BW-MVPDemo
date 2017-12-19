@@ -117,5 +117,4 @@ public abstract class BaseStateViewProvide implements IStateViewProvide {
         getStateViews().remove(stateVIewCode);
     }
 
-
 }
